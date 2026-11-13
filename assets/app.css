@@ -37,38 +37,46 @@ h3 { margin: 1.5em 0 0.2em; font-size: 1.02rem; }
 ul.plain { padding-left: 1.4em; }
 ul.plain li { margin: 0.4em 0; }
 
-/* Exercise set cells: [weight / reps / checkbox] */
+/* Exercise sets: seamless table-grid, wraps on narrow screens.
+   Each column = one set: label row on top, checkbox row below. */
 .sets {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5em;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.2em, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
   margin: 0.4em 0 0.2em;
 }
 .set {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 4.4em;
-  padding: 0.5em 0.55em 0.45em;
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  padding: 0.55em 0.25em 0.45em;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-.set .w {
-  font-size: 0.75em;
-  color: var(--muted);
+.set .lbl {
+  display: block;
+  width: 100%;
+  text-align: center;
   white-space: nowrap;
+  padding-bottom: 0.4em;
+  margin-bottom: 0.45em;
+  border-bottom: 1px solid var(--border);
 }
 .set .r { font-weight: 700; font-variant-numeric: tabular-nums; }
+.set .w { color: var(--muted); font-size: 0.85em; }
 .set input[type="checkbox"] {
-  width: 1.15em;
-  height: 1.15em;
-  margin: 0.35em 0 0;
+  width: 1.2em;
+  height: 1.2em;
+  margin: 0;
   accent-color: var(--accent);
 }
-.set:has(input:checked) { opacity: 0.45; border-color: var(--accent-strong); }
+.set:has(input:checked) { background: #20303e; }
+.set:has(input:checked) .lbl { color: var(--muted); }
 
 /* Toolbar (progress + reset) */
 .toolbar { margin: 0.9em 0 1.2em; align-items: center; }

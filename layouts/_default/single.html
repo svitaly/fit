@@ -30,8 +30,7 @@
         <div class="sets">
           {{ range . }}
             <label class="set">
-              <span class="w">{{ .w }}</span>
-              <span class="r">{{ .r }}</span>
+              <span class="lbl"><span class="r">{{ .r }}</span>{{ with .w }}<span class="w"> / {{ . }}</span>{{ end }}</span>
               <input type="checkbox" class="set-check">
             </label>
           {{ end }}
