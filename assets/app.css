@@ -11,6 +11,8 @@
   --muted: #8b96a3;
   --accent: #4a9eff;
   --accent-strong: #2b7fd4;
+  --drop-bg: #1e3328;
+  --drop-accent: #57c793;
 }
 
 html { color-scheme: dark; }
@@ -41,7 +43,7 @@ ul.plain li { margin: 0.4em 0; }
    Each column = one set: label row on top, checkbox row below. */
 .sets {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(5.2em, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(5.8em, 1fr));
   gap: 1px;
   background: var(--border);
   border: 1px solid var(--border);
@@ -77,6 +79,16 @@ ul.plain li { margin: 0.4em 0; }
 }
 .set:has(input:checked) { background: #20303e; }
 .set:has(input:checked) .lbl { color: var(--muted); }
+
+/* Drop-set group: the last main set (anchor) and its drop sets share a tint;
+   drop cells get a ↳ marker. */
+.set.anchor, .set.drop { background: var(--drop-bg); }
+.set.drop .lbl::before {
+  content: "↳ ";
+  color: var(--drop-accent);
+  font-size: 0.85em;
+}
+.set.anchor:has(input:checked), .set.drop:has(input:checked) { background: #20303e; }
 
 /* Toolbar (progress + reset) */
 .toolbar { margin: 0.9em 0 1.2em; align-items: center; }

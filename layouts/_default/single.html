@@ -28,9 +28,17 @@
       {{ with $ex.note }}<p class="note">{{ . }}</p>{{ end }}
       {{ with $ex.sets }}
         <div class="sets">
-          {{ range . }}
-            <label class="set">
-              <span class="lbl"><span class="r">{{ .r }}</span>{{ with .w }}<span class="w"> / {{ . }}</span>{{ end }}</span>
+          {{ $sets := . }}
+          {{ range $j, $s := $sets }}
+            {{ $classes := "set" }}
+            {{ if $s.drop }}{{ $classes = print $classes " drop" }}{{ end }}
+            {{ $nextIdx := add $j 1 }}
+            {{ if and (not $s.drop) (lt $nextIdx (len $sets)) }}
+              {{ $next := index $sets $nextIdx }}
+              {{ if $next.drop }}{{ $classes = print $classes " anchor" }}{{ end }}
+            {{ end }}
+            <label class="{{ $classes }}">
+              <span class="lbl"><span class="r">{{ $s.r }}</span>{{ with $s.w }}<span class="w"> / {{ . }}</span>{{ end }}</span>
               <input type="checkbox" class="set-check">
             </label>
           {{ end }}

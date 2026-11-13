@@ -35,6 +35,7 @@ exercises:
     sets:
       - { w: "60ф", r: 10 }                 # w = вес (string), r = повторы
       - { w: "СВ", r: "макс" }              # СВ = свой вес
+      - { w: "70ф", r: 10, drop: true }      # дроп-сет (подсвечивается вместе с последним рабочим)
     comment: "70ф — дроп-сет"                # optional coach note
 finisher:            # optional, list of strings
   - "**Кардио 15 минут**"
@@ -45,7 +46,8 @@ notes:              # optional, list of strings
 
 Fields: `goal`, `warmup`, `finisher`, `notes`, and per-exercise `note` /
 `comment` are optional. Drop-sets and rest-pause sets are just extra cells
-(plus a `comment` explaining them).
+marked with `drop: true` (plus a `comment` explaining them) — they are
+highlighted in green together with the last main working set.
 
 ## Marking a day as done
 
