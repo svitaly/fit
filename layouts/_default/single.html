@@ -1,9 +1,18 @@
 {{ define "main" }}
 <article>
   <header>
-    <p class="date">{{ .Date.Format "02.01.2006" }}</p>
+    <p class="date muted">{{ .Date.Format "02.01.2006" }}</p>
     <h1>{{ .Title }}</h1>
+    {{ if .Params.done }}<span class="done-badge">✓ выполнено</span>{{ end }}
   </header>
+  <div class="pure-g toolbar">
+    <div class="pure-u-1 pure-u-md-1-2">
+      <span id="tick-count" class="muted">Отметки сохраняются на этом устройстве</span>
+    </div>
+    <div class="pure-u-1 pure-u-md-1-2 right">
+      <button id="tick-reset" class="pure-button" type="button">Сбросить отметки</button>
+    </div>
+  </div>
   {{ .Content }}
   <p class="back"><a href="{{ .Site.Home.RelPermalink }}">← Все программы</a></p>
 </article>

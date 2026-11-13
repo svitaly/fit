@@ -1,14 +1,17 @@
 {{ define "main" }}
 <h1>Программы тренировок</h1>
-<p class="lead">Новые дни добавляются сверху. Открой программу — и вперёд 💪</p>
-<ul class="days">
-{{ range .Site.RegularPages.ByDate.Reverse }}
-  <li>
-    <a href="{{ .RelPermalink }}">
-      <span class="day-title">{{ .Title }}</span>
-      <span class="day-date">{{ .Date.Format "02.01.2006" }}</span>
-    </a>
-  </li>
-{{ end }}
-</ul>
+<p class="muted">Новые дни добавляются сверху. ✅ — тренировка выполнена.</p>
+<div class="pure-menu">
+  <ul class="pure-menu-list days">
+  {{ range .Site.RegularPages.ByDate.Reverse }}
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="{{ .RelPermalink }}">
+        <span class="day-date">{{ .Date.Format "02.01.2006" }}</span>
+        <span class="day-title">{{ .Title }}</span>
+        {{ if .Params.done }}<span class="done-badge">✓ выполнено</span>{{ end }}
+      </a>
+    </li>
+  {{ end }}
+  </ul>
+</div>
 {{ end }}

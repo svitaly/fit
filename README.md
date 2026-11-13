@@ -6,10 +6,22 @@ via GitHub Pages at **https://fit.sidorok.com**.
 ## How it works
 
 - Each training day is a markdown file in `days/`, named `dd-mm-yyyy.md`,
-  with a YAML header (`title`, `date`).
+  with a YAML header (`title`, `date`, `done`).
 - Every push to `main` triggers `.github/workflows/pages.yml`, which builds the
   site with Hugo and deploys it to GitHub Pages.
-- The index page lists all days (newest first) as links.
+- The index page lists all days (newest first) as links; completed days get a
+  "✓ выполнено" badge.
+- Design is [Pure CSS](https://pure-css.github.io/) (vendored in `static/`) plus
+  a tiny `static/app.css` glue layer.
+- Program pages have checkboxes (client-side, `static/app.js`): tick exercises
+  during the session. State is stored in the browser's localStorage per device —
+  it survives reloads and screen lock, and can be reset with the button.
+
+## Marking a day as done
+
+After the training, edit `days/dd-mm-yyyy.md` and set `done: true` in the YAML
+header (optionally also record actual results in the text). Push — the day gets
+the "✓ выполнено" badge on the index page.
 
 ## Local preview
 
@@ -26,6 +38,7 @@ Create `days/dd-mm-yyyy.md`:
 ---
 title: "Спина + бицепс + пресс"
 date: 2026-11-16
+done: false
 ---
 
 ...program content...

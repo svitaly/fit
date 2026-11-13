@@ -1,0 +1,57 @@
+/* Minimal glue on top of Pure CSS: page container, tick rows, badges.
+   Visual language (buttons, menu, colors) comes from Pure itself. */
+
+.wrap { max-width: 700px; margin: 0 auto; padding: 1.2em 1em 3em; }
+
+.muted { color: #777; }
+h2 { margin: 1.6em 0 0.4em; padding-bottom: 0.2em; border-bottom: 1px solid #eee; }
+
+/* Index: list of days */
+.days .pure-menu-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 0.45em 0;
+  padding: 0.7em 0.8em;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+}
+.day-date { color: #777; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.day-title { font-weight: 600; flex: 1; }
+
+/* "done" badge on index + article header */
+.done-badge {
+  background: #0078e7; /* Pure button-primary color */
+  color: #fff;
+  font-size: 0.8em;
+  border-radius: 1em;
+  padding: 0.15em 0.7em;
+  white-space: nowrap;
+}
+
+/* Article: checkbox rows */
+article ul, article ol { padding-left: 1.5em; }
+li.tick > input[type="checkbox"] {
+  width: 1.25em;
+  height: 1.25em;
+  margin: 0 0.5em 0.15em 0;
+  vertical-align: -0.2em;
+  accent-color: #0078e7;
+}
+li.tick:has(input:checked) { opacity: 0.5; }
+
+/* Toolbar (progress + reset) */
+.toolbar { margin: 0.8em 0 1.2em; align-items: center; }
+.toolbar .right { text-align: right; }
+.toolbar .pure-button { font-size: 0.85em; }
+
+.date { margin: 0 0 0.2em; font-variant-numeric: tabular-nums; }
+.back { margin-top: 2.2em; }
+
+footer {
+  margin-top: 3em;
+  border-top: 1px solid #eee;
+  padding-top: 1em;
+  font-size: 0.85em;
+  color: #777;
+}

@@ -3,16 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="light">
   <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} · {{ .Site.Title }}{{ end }}</title>
-  <link rel="stylesheet" href="{{ "style.css" | relURL }}">
+  <link rel="stylesheet" href="{{ "pure-min.css" | relURL }}">
+  <link rel="stylesheet" href="{{ "app.css" | relURL }}">
 </head>
 <body>
-  <main>
+  <div class="wrap">
     {{ block "main" . }}{{ end }}
     <footer>
       <p>fit.sidorok.com · все веса в фунтах (ф)</p>
     </footer>
-  </main>
+  </div>
+  <script src="{{ "app.js" | relURL }}" defer></script>
 </body>
 </html>
