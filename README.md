@@ -65,7 +65,10 @@ on the first successful run, but the DNS record must exist first.
 
 ### 3. Point the domain from GoDaddy
 
-In GoDaddy → **My Products → sidorok.com → DNS → Manage Zones** add a record:
+Open the GoDaddy Domain Control Center: **https://dcc.godaddy.com/domains/**
+(or: godaddy.com → My Products → Domains → sidorok.com → DNS → Manage DNS).
+
+Find the DNS records table and add a record:
 
 | Field  | Value                    |
 |--------|--------------------------|
@@ -76,7 +79,6 @@ In GoDaddy → **My Products → sidorok.com → DNS → Manage Zones** add a re
 
 Replace `USERNAME` with the actual GitHub account name. Delete any conflicting
 `A`/`CNAME` records for the `fit` host if present.
-
 DNS propagation usually takes from a few minutes up to an hour. Verify:
 
 ```sh
