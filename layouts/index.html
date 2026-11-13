@@ -1,0 +1,14 @@
+{{ define "main" }}
+<h1>Программы тренировок</h1>
+<p class="lead">Новые дни добавляются сверху. Открой программу — и вперёд 💪</p>
+<ul class="days">
+{{ range .Site.RegularPages.ByDate.Reverse }}
+  <li>
+    <a href="{{ .RelPermalink }}">
+      <span class="day-title">{{ .Title }}</span>
+      <span class="day-date">{{ .Date.Format "02.01.2006" }}</span>
+    </a>
+  </li>
+{{ end }}
+</ul>
+{{ end }}

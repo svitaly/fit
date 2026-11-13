@@ -1,0 +1,6 @@
+baseURL = "https://fit.sidorok.com/"
+title = "Fit — тренировки"
+contentDir = "days"
+publishDir = "html"
+disableKinds = ["taxonomy", "term"]
+buildFuture = true

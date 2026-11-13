@@ -1,0 +1,10 @@
+{{ define "main" }}
+<article>
+  <header>
+    <p class="date">{{ .Date.Format "02.01.2006" }}</p>
+    <h1>{{ .Title }}</h1>
+  </header>
+  {{ .Content }}
+  <p class="back"><a href="{{ .Site.Home.RelPermalink }}">← Все программы</a></p>
+</article>
+{{ end }}

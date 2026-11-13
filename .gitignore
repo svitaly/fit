@@ -1,0 +1,10 @@
+# chat exports stay on this machine only
+chat/
+
+# hugo build output
+html/
+resources/_gen/
+.hugo_build.lock
+
+# OS junk
+.DS_Store
