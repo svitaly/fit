@@ -13,7 +13,45 @@
       <button id="tick-reset" class="pure-button" type="button">Сбросить отметки</button>
     </div>
   </div>
+  {{ with .Params.goal }}<p class="goal"><strong>Цель:</strong> {{ . }}</p>{{ end }}
   {{ .Content }}
+  {{ with .Params.warmup }}
+    <h2>Разминка</h2>
+    <ul class="plain">
+      {{ range . }}<li>{{ . | markdownify }}</li>{{ end }}
+    </ul>
+  {{ end }}
+  <h2>Основная часть</h2>
+  {{ range $i, $ex := .Params.exercises }}
+    <section class="ex">
+      <h3>{{ add $i 1 }}. {{ $ex.name }}</h3>
+      {{ with $ex.note }}<p class="note">{{ . }}</p>{{ end }}
+      {{ with $ex.sets }}
+        <div class="sets">
+          {{ range . }}
+            <label class="set">
+              <span class="w">{{ .w }}</span>
+              <span class="r">{{ .r }}</span>
+              <input type="checkbox" class="set-check">
+            </label>
+          {{ end }}
+        </div>
+      {{ end }}
+      {{ with $ex.comment }}<p class="comment">{{ . }}</p>{{ end }}
+    </section>
+  {{ end }}
+  {{ with .Params.finisher }}
+    <h2>Заминка</h2>
+    <ul class="plain">
+      {{ range . }}<li>{{ . | markdownify }}</li>{{ end }}
+    </ul>
+  {{ end }}
+  {{ with .Params.notes }}
+    <h2>Примечания</h2>
+    <ul class="plain">
+      {{ range . }}<li>{{ . | markdownify }}</li>{{ end }}
+    </ul>
+  {{ end }}
   <p class="back"><a href="{{ .Site.Home.RelPermalink }}">← Все программы</a></p>
 </article>
 {{ end }}

@@ -1,26 +1,13 @@
-/* Tick boxes for training programs.
-   Injects a checkbox into every top-level list item of the article,
-   persists state in localStorage (per page, per device). */
+/* Persist set-checkbox state for training programs.
+   Checkboxes are rendered server-side (class "set-check", one per set cell).
+   State is stored in localStorage per page, per device. */
 (function () {
   'use strict';
 
-  var article = document.querySelector('article');
-  if (!article) return;
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input.set-check'));
+  if (!boxes.length) return;
 
-  var key = 'fit-ticks:' + location.pathname;
-  var boxes = [];
-
-  article.querySelectorAll('ol, ul').forEach(function (list) {
-    Array.prototype.forEach.call(list.children, function (li) {
-      if (li.tagName !== 'LI' || li.querySelector(':scope > input[type="checkbox"]')) return;
-      var cb = document.createElement('input');
-      cb.type = 'checkbox';
-      li.classList.add('tick');
-      li.insertBefore(cb, li.firstChild);
-      cb.addEventListener('change', save);
-      boxes.push(cb);
-    });
-  });
+  var key = 'fit-sets:' + location.pathname;
 
   function save() {
     var state = boxes.map(function (cb) { return cb.checked ? 1 : 0; }).join('');
@@ -41,6 +28,8 @@
     var done = boxes.filter(function (cb) { return cb.checked; }).length;
     counter.textContent = 'Отмечено: ' + done + ' / ' + boxes.length;
   }
+
+  boxes.forEach(function (cb) { cb.addEventListener('change', save); });
 
   var reset = document.getElementById('tick-reset');
   if (reset) {
