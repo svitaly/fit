@@ -277,12 +277,16 @@ ul.plain li { margin: 0.4em 0; }
 
 /* Dark pure-table (measurements history) */
 .table-wrap { overflow-x: auto; margin: 0.5em 0; }
-.pure-table { border: 1px solid var(--border); }
+.pure-table {
+  width: 100%;
+  border: 1px solid var(--border);
+}
 .pure-table td, .pure-table th {
   border-left: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   color: var(--text);
   font-variant-numeric: tabular-nums;
+  text-align: center;
 }
 .pure-table thead { background: var(--card-hover); }
 .pure-table thead th { color: var(--muted); }
