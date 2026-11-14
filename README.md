@@ -1,104 +1,116 @@
 # fit.sidorok.com
 
-Static site with training programs, built with [Hugo](https://gohugo.io) and served
-via GitHub Pages at **https://fit.sidorok.com**.
+Static fitness site: training programs, measurements, diet and vitamins.
+Built with [Hugo](https://gohugo.io), served via GitHub Pages at
+**https://fit.sidorok.com**. Every push to `main` builds and deploys the site
+(`.github/workflows/pages.yml`).
 
-## How it works
+## Site map
 
-- **Workouts** (home page, `/`) — list of training days from `workouts/`, named
-  `dd-mm-yyyy.md`. Completed days get a "✓ выполнено" badge.
-- **Diet** (`/diet/`) and **Vitamins** (`/vitamins/`) — placeholder pages from
-  `pages/`, content to be added later.
-- **Measurements** (`/measurements/`) — body data + measurement entries from
-  `measurements/` (one file per report, named `dd-mm-yyyy.md`).
-- The top nav bar shows on all pages except workout day pages.
-- Every push to `main` triggers `.github/workflows/pages.yml`, which builds the
-  site with Hugo and deploys it to GitHub Pages.
-- Design: [Pure CSS](https://pure-css.github.io/) (vendored in `assets/`) with a
-  dark theme layer in `assets/app.css`.
-- Workout pages have interactive set checkboxes and per-exercise "Заметки"
-  textareas — state is stored in the browser's localStorage per device, cleared
-  by the reset button.
+| URL | Source | Content |
+|---|---|---|
+| `/` | `workouts/` | Workouts: list of training days, newest first, "✓ выполнено" badge on completed |
+| `/workouts/dd-mm-yyyy/` | `workouts/dd-mm-yyyy.md` | One training day |
+| `/measurements/` | `measurements/` | Body data, latest measurements, history table |
+| `/diet/`, `/vitamins/` | `pages/*.md` | Placeholders, content to be added |
 
-## Day file structure
+- The top nav (Тренировки · Диета · Замеры · Витамины) shows on every page
+  **except** workout day pages.
+- `chat/` is gitignored — the coach-chat export stays on the local machine only.
+- Design: [Pure CSS](https://pure-css.github.io/) vendored in `assets/`, with a
+  dark-theme layer and custom components in `assets/app.css`. Dark only.
+- All weights in the workout programs are in **pounds**; set cells show bare
+  numbers (`15/10` = reps/weight). Units are noted in each workout's Примечания.
 
-See `workouts/*.md` for a full example. Key fields:
+## Workout day file (`workouts/dd-mm-yyyy.md`)
+
+The whole program lives in the YAML header; the body is empty.
+
 ```yaml
 ---
 title: "Спина + бицепс + пресс"
 date: 2026-11-16
 done: false
-restMax: "150"                        # max rest for the session (sec), fallback badge
-goal: "..."
-warmup:              # list of strings, supports **markdown**
+restMax: "150"     # session max rest, sec — fallback for the rest badge
+goal: "..."        # one-liner shown under the page title
+warmup:            # list of strings (**markdown** ok); NO rest instructions here
   - "Кардио 6 минут, пульс 120–130"
 exercises:
   - name: "Тяга Т-грифа"
-    machine: "Т-гриф"                  # machine / equipment (optional)
-    protection: "Налокотники"          # protection equipment badge (optional)
-    rest: "30–60"                      # rest between sets, sec (falls back to restMax)
-    note: "Максимально сводить лопатки" # instructions / insights (optional)
+    machine: "Т-гриф"                    # machine / equipment chip, free-form RU/EN
+    protection: "Налокотники"            # blue badge; omit if no protection needed
+    rest: "30–60"                        # green badge, sec; falls back to restMax
+    note: "Максимально сводить лопатки"  # ALL instructions/insights go here
     sets:
-      - { w: "60ф", r: 10 }                 # w = вес (string), r = повторы
-      - { w: "СВ", r: "макс" }              # СВ = свой вес
-      - { w: "70ф", r: 10, drop: true }      # дроп-сет (подсвечивается вместе с последним рабочим)
-    comment: "70ф — дроп-сет"                # optional coach note
-    actual: [10, 10, 10, 10, 10, 8]         # optional: фактические повторы по порядку сетов
-    result: "Тяжело на последних"           # optional: заметка по выполнению
-finisher:            # optional, list of strings
-  - "**Кардио 15 минут**"
-notes:              # optional, list of strings
+      - { w: "60", r: 10 }               # w = weight (string), r = reps
+      - { w: "СВ", r: "макс" }           # СВ = body weight
+      - { w: "70", r: 10, drop: true }   # drop-set cell
+    comment: "70 — дроп-сет"             # optional coach note (e.g. drop-set explanation)
+    actual: [10, 10, 10, 10, 10, 8]      # report mode: performed reps, set order
+    result: "Тяжело на последних"        # report mode: note from the training report
+finisher:          # optional, list of strings
+  - "**Кардио 15 минут, пульс 125–135**"
+notes:             # optional, list of strings — CURRENT workout info only
   - "Все веса в фунтах (ф)"
 ---
 ```
 
-Each exercise renders as: number + title with info badges (blue protection,
-green rest) → machine subtitle → instructions (`note`) → set/rep grid →
-completion notes. On upcoming days a small grayed-out "Заметки" textarea sits
-under each exercise — notes typed during the session are stored in localStorage
-per device and cleared by the reset button. On completed days the textarea is
-replaced by the `result` note from the report.
+### Exercise block rendering
 
-Fields: `goal`, `restMax`, `warmup`, `finisher`, `notes`, and per-exercise
-`machine`, `protection`, `rest`, `note`, `comment`, `result`, `actual` are
-optional (the rest badge falls back to session `restMax` and is always shown).
-Drop-sets and rest-pause sets are just extra cells marked with `drop: true` —
-highlighted in green together with the last main working set.
+Number + title with badges (title left, badges right) → machine chip →
+instructions (`note`) → set/rep grid → completion notes.
 
-## Marking a day as done
+- **Badges**: blue `protection` (Russian: Налокотники, Пояс, Лямки…) — shown
+  only when protection is required; green `rest` — **always shown**, seconds
+  without the word ("150с", "30–60с"), per-exercise `rest` or session `restMax`.
+- **Machine**: free-form, Russian or English (Смитт, Гравитрон, Dumbbells,
+  Smith machine…) — rendered as a subdued chip.
+- **`note`** holds everything instructional: technique cues, breathing, coach's
+  explanations, substitutions.
+- **Set/rep grid**: one cell per set, label `reps / weight`, checkbox under a
+  hairline. Coach's multi-set notation ("75: 3/8") is expanded into separate
+  cells. Drop-sets/rest-pause are extra cells with `drop: true` — they form a
+  green group together with the last main working set and get a "↳" marker.
+- **Notes section**: only current-workout information. No rest-day instructions
+  (e.g. steps on rest days), no next-workout teasers.
+- **No video markers** ("(видео)") in programs — they were removed and should
+  not be reintroduced when converting programs from the chat.
+- Warm-up, finisher and notes lists are plain — they never get checkboxes;
+  only real exercise sets are interactive.
 
-After the training, edit `workouts/dd-mm-yyyy.md`:
+### Upcoming vs completed days
 
-1. set `done: true` — the page switches to "report mode": no checkboxes/toolbar,
-   the index link gets a "✓ выполнено" badge;
-2. per exercise, record deviations: `actual` — list of performed reps in set
-   order (omit it for exercises done exactly as planned); numbers that differ
-   from the plan get highlighted; `result` — free-form note shown under the
-   exercise.
+- `done: false` (upcoming): interactive page — tappable set checkboxes, a
+  progress counter, and per-exercise "Заметки…" notes. The notes control is a
+  single muted line that expands into a one-line auto-growing textarea on tap.
+  Checkboxes and notes persist in the browser's localStorage per device and are
+  cleared by the "Сбросить" button.
+- `done: true` (completed, "report mode"): exactly the same look minus all
+  interactive elements — each set cell shows the actual performed reps instead
+  of a checkbox (numbers deviating from the plan are highlighted), and each
+  `result` note is shown under its exercise. The day gets a "✓ выполнено" badge
+  on the page and on the index.
 
-Push — and the completed day becomes a training log entry.
+### Marking a day as done (after a training report)
 
-## Local preview
+Edit `workouts/dd-mm-yyyy.md`:
 
-```sh
-make serve    # live preview at http://localhost:1313
-make build    # build static site into ./html
-```
+1. set `done: true`;
+2. per exercise, record deviations: `actual` — performed reps in set order
+   (omit for exercises done exactly as planned); `result` — free-form note from
+   the report.
 
-## Adding a new training day
+Push — the day becomes a training log entry.
 
-Create `workouts/dd-mm-yyyy.md` following the structure above, commit and push —
-done.
+## Measurement entry (`measurements/dd-mm-yyyy.md`)
 
-## Adding a measurement entry
-
-Create `measurements/dd-mm-yyyy.md`:
+One file per report:
 
 ```yaml
 ---
 title: "Замер от 16.02.2026"
 date: 2026-02-16
-kg: "99,0"       # вес, кг ('weight' is a reserved Hugo key — use 'kg')
+kg: "99,0"       # weight, kg ('weight' is a reserved Hugo key — use 'kg')
 waist: "101,9"   # живот, см
 bicep: "40,4"    # бицепс, см
 thigh: "63,4"    # бедро, см
@@ -108,71 +120,13 @@ build:
 ---
 ```
 
-The measurements page (general info, latest entry cards, full history table)
-updates automatically.
+The measurements page (general info — height and DOB live in
+`measurements/_index.md`, age is computed at render time; latest entry as stat
+cards; full history table, newest first) updates automatically.
 
----
-
-## First-time setup (already done except the push)
-
-This repo expects to be a **public** GitHub repository. The `chat/` directory
-is in `.gitignore` and never gets committed.
-
-### 1. Create the repo and push
-
-On github.com create a new **public** repo (no README, no license), e.g. `fit`.
-Then from this directory:
+## Local preview
 
 ```sh
-git remote add origin git@github.com:USERNAME/fit.git
-# or: git remote add origin https://github.com/USERNAME/fit.git
-git push -u origin main
+make serve    # live preview at http://localhost:1313
+make build    # build static site into ./html
 ```
-
-### 2. Enable GitHub Pages (via Actions)
-
-Repo → **Settings → Pages**:
-
-- **Build and deployment → Source:** `GitHub Actions`
-- **Custom domain:** `fit.sidorok.com` — enter and Save. If DNS isn't set up yet
-  (step 3), the check may fail; just re-run it after DNS propagates.
-- Once the domain check passes, enable **Enforce HTTPS**.
-
-The `configure-pages` step in the workflow sets the custom domain automatically
-on the first successful run, but the DNS record must exist first.
-
-### 3. Point the domain from GoDaddy
-
-Open the GoDaddy Domain Control Center: **https://dcc.godaddy.com/domains/**
-(or: godaddy.com → My Products → Domains → sidorok.com → DNS → Manage DNS).
-
-Find the DNS records table and add a record:
-
-| Field  | Value                    |
-|--------|--------------------------|
-| Type   | `CNAME`                  |
-| Name   | `fit`                    |
-| Value  | `USERNAME.github.io.`    |
-| TTL    | `1 Hour` (or default)    |
-
-Replace `USERNAME` with the actual GitHub account name. Delete any conflicting
-`A`/`CNAME` records for the `fit` host if present.
-DNS propagation usually takes from a few minutes up to an hour. Verify:
-
-```sh
-dig fit.sidorok.com +short   # should return USERNAME.github.io. and its IPs
-```
-
-### 4. Verify
-
-Push a commit (or re-run the workflow from the Actions tab), wait for the green
-checkmark, then open **https://fit.sidorok.com**.
-
-> If Pages says "domain not verified": Settings → Pages → re-validate the custom
-> domain after DNS resolves. Subdomain CNAMEs to `USERNAME.github.io` normally
-> don't require the domain-verification TXT flow (that's for apex domains/orgs).
-
-## Notes
-
-- All weights in the programs are in pounds (ф = фунты).
-- `html/` is generated output and is gitignored; CI rebuilds it on every push.
