@@ -30,7 +30,7 @@
     {{ $rest := $ex.rest }}
     {{ if not $rest }}{{ $rest = $restMax }}{{ end }}
     <section class="ex">
-      <h3>{{ add $i 1 }}. {{ $ex.name }}{{ with $ex.protection }} <span class="badge prot">{{ . }}</span>{{ end }} <span class="badge rest">{{ $rest }}с</span></h3>
+      <h3 class="ex-title"><span class="ex-name">{{ add $i 1 }}. {{ $ex.name }}</span><span class="badges">{{ with $ex.protection }}<span class="badge prot">{{ . }}</span>{{ end }}<span class="badge rest">{{ $rest }}с</span></span></h3>
       {{ with $ex.machine }}<p class="machine">{{ . }}</p>{{ end }}
       {{ with $ex.note }}<p class="note">{{ . }}</p>{{ end }}
       {{ with $ex.sets }}
