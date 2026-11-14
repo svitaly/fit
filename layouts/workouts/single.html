@@ -63,7 +63,10 @@
       {{ if $isDone }}
         {{ with $ex.result }}<p class="result">{{ . }}</p>{{ end }}
       {{ else }}
-        <textarea class="ex-note-input" data-ex="{{ $i }}" rows="1" placeholder="Заметки"></textarea>
+        <div class="ex-note collapsed">
+          <button class="ex-note-toggle" type="button">Заметки…</button>
+          <textarea class="ex-note-input" data-ex="{{ $i }}" rows="1" placeholder="Заметки"></textarea>
+        </div>
       {{ end }}
     </section>
   {{ end }}

@@ -1,13 +1,14 @@
 /* Persist set-checkbox state and per-exercise notes for training programs.
    Checkboxes are rendered server-side (class "set-check", one per set cell).
-   Notes are textareas with data-ex attributes (exercise index).
+   Notes are textareas (data-ex = exercise index) hidden behind a one-line
+   "Заметки…" toggle; they expand on tap and auto-grow with content.
    State is stored in localStorage per page, per device. */
 (function () {
   'use strict';
 
   var boxes = Array.prototype.slice.call(document.querySelectorAll('input.set-check'));
-  var notes = Array.prototype.slice.call(document.querySelectorAll('textarea.ex-note-input'));
-  if (!boxes.length && !notes.length) return;
+  var wraps = Array.prototype.slice.call(document.querySelectorAll('.ex-note'));
+  if (!boxes.length && !wraps.length) return;
 
   var ticksKey = 'fit-sets:' + location.pathname;
   var notesKey = 'fit-notes:' + location.pathname;
@@ -31,25 +32,50 @@
 
   /* --- notes --- */
 
-  function loadNotes() {
-    var data = {};
-    try { data = JSON.parse(localStorage.getItem(notesKey) || '{}'); } catch (e) { /* corrupted */ }
-    notes.forEach(function (t) {
-      var v = data[t.getAttribute('data-ex')];
-      if (v) t.value = v;
-    });
+  function loadNotesData() {
+    try { return JSON.parse(localStorage.getItem(notesKey) || '{}'); } catch (e) { return {}; }
   }
 
   function saveNote(t) {
-    var data = {};
-    try { data = JSON.parse(localStorage.getItem(notesKey) || '{}'); } catch (e) { /* corrupted */ }
+    var data = loadNotesData();
     var id = t.getAttribute('data-ex');
     if (t.value) data[id] = t.value; else delete data[id];
     try { localStorage.setItem(notesKey, JSON.stringify(data)); } catch (e) { /* private mode */ }
   }
 
-  notes.forEach(function (t) {
-    t.addEventListener('input', function () { saveNote(t); });
+  function autosize(t) {
+    t.style.height = 'auto';
+    t.style.height = t.scrollHeight + 'px';
+  }
+
+  wraps.forEach(function (wrap) {
+    var t = wrap.querySelector('.ex-note-input');
+    var toggle = wrap.querySelector('.ex-note-toggle');
+    if (!t) return;
+
+    var v = loadNotesData()[t.getAttribute('data-ex')];
+    if (v) {
+      t.value = v;
+      wrap.classList.remove('collapsed');
+      autosize(t);
+    }
+
+    if (toggle) {
+      toggle.addEventListener('click', function () {
+        wrap.classList.remove('collapsed');
+        autosize(t);
+        t.focus();
+      });
+    }
+
+    t.addEventListener('input', function () {
+      autosize(t);
+      saveNote(t);
+    });
+
+    t.addEventListener('blur', function () {
+      if (!t.value) wrap.classList.add('collapsed');
+    });
   });
 
   /* --- counter + reset --- */
@@ -65,7 +91,14 @@
   if (reset) {
     reset.addEventListener('click', function () {
       boxes.forEach(function (cb) { cb.checked = false; });
-      notes.forEach(function (t) { t.value = ''; });
+      wraps.forEach(function (wrap) {
+        var t = wrap.querySelector('.ex-note-input');
+        if (t) {
+          t.value = '';
+          t.style.height = 'auto';
+        }
+        wrap.classList.add('collapsed');
+      });
       try {
         localStorage.removeItem(ticksKey);
         localStorage.removeItem(notesKey);
@@ -75,6 +108,5 @@
   }
 
   loadTicks();
-  loadNotes();
   updateCount();
 })();
