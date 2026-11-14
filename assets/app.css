@@ -80,6 +80,22 @@ ul.plain li { margin: 0.4em 0; }
 .set:has(input:checked) { background: #20303e; }
 .set:has(input:checked) .lbl { color: var(--muted); }
 
+/* Done day: actual reps shown instead of checkboxes */
+.done .set { cursor: default; }
+.set .a {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  padding: 0.35em 0 0.1em;
+}
+.set .a.diff { color: #ffb020; }
+.result {
+  margin: 0.5em 0 0;
+  padding-left: 0.6em;
+  border-left: 3px solid var(--accent);
+  font-size: 0.92em;
+}
+
 /* Drop-set group: the last main set (anchor) and its drop sets share a tint;
    drop cells get a ↳ marker. */
 .set.anchor, .set.drop { background: var(--drop-bg); }

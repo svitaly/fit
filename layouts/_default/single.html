@@ -1,10 +1,12 @@
 {{ define "main" }}
-<article>
+{{ $isDone := .Params.done }}
+<article{{ if $isDone }} class="done"{{ end }}>
   <header>
     <p class="date muted">{{ .Date.Format "02.01.2006" }}</p>
     <h1>{{ .Title }}</h1>
-    {{ if .Params.done }}<span class="done-badge">✓ выполнено</span>{{ end }}
+    {{ if $isDone }}<span class="done-badge">✓ выполнено</span>{{ end }}
   </header>
+  {{ if not $isDone }}
   <div class="pure-g toolbar">
     <div class="pure-u-1 pure-u-md-1-2">
       <span id="tick-count" class="muted">Отметки сохраняются на этом устройстве</span>
@@ -13,6 +15,7 @@
       <button id="tick-reset" class="pure-button" type="button">Сбросить отметки</button>
     </div>
   </div>
+  {{ end }}
   {{ with .Params.goal }}<p class="goal"><strong>Цель:</strong> {{ . }}</p>{{ end }}
   {{ .Content }}
   {{ with .Params.warmup }}
@@ -29,6 +32,7 @@
       {{ with $ex.sets }}
         <div class="sets">
           {{ $sets := . }}
+          {{ $exActual := $ex.actual }}
           {{ range $j, $s := $sets }}
             {{ $classes := "set" }}
             {{ if $s.drop }}{{ $classes = print $classes " drop" }}{{ end }}
@@ -39,12 +43,21 @@
             {{ end }}
             <label class="{{ $classes }}">
               <span class="lbl"><span class="r">{{ $s.r }}</span>{{ with $s.w }}<span class="w"> / {{ . }}</span>{{ end }}</span>
-              <input type="checkbox" class="set-check">
+              {{ if $isDone }}
+                {{ $a := $s.r }}
+                {{ with $exActual }}{{ $a = index . $j }}{{ end }}
+                {{ $cls := "a" }}
+                {{ if ne (printf "%v" $a) (printf "%v" $s.r) }}{{ $cls = print $cls " diff" }}{{ end }}
+                <span class="{{ $cls }}">{{ $a }}</span>
+              {{ else }}
+                <input type="checkbox" class="set-check">
+              {{ end }}
             </label>
           {{ end }}
         </div>
       {{ end }}
       {{ with $ex.comment }}<p class="comment">{{ . }}</p>{{ end }}
+      {{ with $ex.result }}<p class="result">{{ . }}</p>{{ end }}
     </section>
   {{ end }}
   {{ with .Params.finisher }}

@@ -37,6 +37,8 @@ exercises:
       - { w: "СВ", r: "макс" }              # СВ = свой вес
       - { w: "70ф", r: 10, drop: true }      # дроп-сет (подсвечивается вместе с последним рабочим)
     comment: "70ф — дроп-сет"                # optional coach note
+    actual: [10, 10, 10, 10, 10, 8]         # optional: фактические повторы по порядку сетов
+    result: "Тяжело на последних"           # optional: заметка по выполнению
 finisher:            # optional, list of strings
   - "**Кардио 15 минут**"
 notes:              # optional, list of strings
@@ -45,15 +47,22 @@ notes:              # optional, list of strings
 ```
 
 Fields: `goal`, `warmup`, `finisher`, `notes`, and per-exercise `note` /
-`comment` are optional. Drop-sets and rest-pause sets are just extra cells
-marked with `drop: true` (plus a `comment` explaining them) — they are
-highlighted in green together with the last main working set.
+`comment` / `result` / `actual` are optional. Drop-sets and rest-pause sets are
+just extra cells marked with `drop: true` (plus a `comment` explaining them) —
+they are highlighted in green together with the last main working set.
 
 ## Marking a day as done
 
-After the training, edit `days/dd-mm-yyyy.md` and set `done: true` in the YAML
-header (optionally also record actual results in a `comment` or `note`).
-Push — the day gets the "✓ выполнено" badge on the index page.
+After the training, edit `days/dd-mm-yyyy.md`:
+
+1. set `done: true` — the page switches to "report mode": no checkboxes/toolbar,
+   the index link gets a "✓ выполнено" badge;
+2. per exercise, record deviations: `actual` — list of performed reps in set
+   order (omit it for exercises done exactly as planned); numbers that differ
+   from the plan get highlighted; `result` — free-form note shown under the
+   exercise.
+
+Push — and the completed day becomes a training log entry.
 
 ## Local preview
 
