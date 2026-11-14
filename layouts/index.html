@@ -1,9 +1,10 @@
 {{ define "main" }}
+{{ partial "nav.html" . }}
 <h1>Программы тренировок</h1>
 <p class="muted">Новые дни добавляются сверху. ✅ — тренировка выполнена.</p>
 <div class="pure-menu">
   <ul class="pure-menu-list days">
-  {{ range .Site.RegularPages.ByDate.Reverse }}
+  {{ range (where .Site.RegularPages "Section" "workouts").ByDate.Reverse }}
     <li class="pure-menu-item">
       <a class="pure-menu-link" href="{{ .RelPermalink }}">
         <span class="day-date">{{ .Date.Format "02.01.2006" }}</span>

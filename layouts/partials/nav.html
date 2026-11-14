@@ -1,0 +1,16 @@
+<nav class="site-nav">
+  <ul class="pure-menu-list">
+    <li class="pure-menu-item">
+      <a class="pure-menu-link{{ if .IsHome }} pure-menu-selected{{ end }}" href="{{ .Site.Home.RelPermalink }}">Тренировки</a>
+    </li>
+    <li class="pure-menu-item">
+      <a class="pure-menu-link{{ if eq .RelPermalink "/diet/" }} pure-menu-selected{{ end }}" href="{{ "diet/" | relURL }}">Диета</a>
+    </li>
+    <li class="pure-menu-item">
+      <a class="pure-menu-link{{ if eq .RelPermalink "/measurements/" }} pure-menu-selected{{ end }}" href="{{ "measurements/" | relURL }}">Замеры</a>
+    </li>
+    <li class="pure-menu-item">
+      <a class="pure-menu-link{{ if eq .RelPermalink "/vitamins/" }} pure-menu-selected{{ end }}" href="{{ "vitamins/" | relURL }}">Витамины</a>
+    </li>
+  </ul>
+</nav>

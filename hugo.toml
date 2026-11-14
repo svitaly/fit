@@ -1,6 +1,16 @@
 baseURL = "https://fit.sidorok.com/"
 title = "Fit — тренировки"
-contentDir = "days"
 publishDir = "html"
 disableKinds = ["taxonomy", "term"]
 buildFuture = true
+
+[module]
+  [[module.mounts]]
+    source = "workouts"
+    target = "content/workouts"
+  [[module.mounts]]
+    source = "measurements"
+    target = "content/measurements"
+  [[module.mounts]]
+    source = "pages"
+    target = "content"

@@ -194,6 +194,65 @@ ul.plain li { margin: 0.4em 0; }
 .date { margin: 0 0 0.2em; font-variant-numeric: tabular-nums; }
 .back { margin-top: 2.2em; }
 
+/* Site nav (top bar; workout day pages don't show it) */
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.2em 0 1.4em;
+  border-bottom: 1px solid var(--border);
+}
+.site-nav .pure-menu-list { display: flex; flex-wrap: wrap; }
+.site-nav .pure-menu-link {
+  color: var(--muted);
+  padding: 0.6em 0.8em;
+  font-size: 0.95em;
+}
+.site-nav .pure-menu-link:hover { background: none; color: var(--text); }
+.site-nav .pure-menu-selected .pure-menu-link,
+.site-nav .pure-menu-selected .pure-menu-link:hover { color: var(--accent); }
+
+/* Measurement stat cards */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7.5em, 1fr));
+  gap: 0.6em;
+  margin: 0.6em 0 0.4em;
+}
+.stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75em 0.5em;
+  text-align: center;
+}
+.stat .v {
+  display: block;
+  font-weight: 700;
+  font-size: 1.2em;
+  font-variant-numeric: tabular-nums;
+}
+.stat .k {
+  display: block;
+  color: var(--muted);
+  font-size: 0.72em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.25em;
+}
+
+/* Dark pure-table (measurements history) */
+.table-wrap { overflow-x: auto; margin: 0.5em 0; }
+.pure-table { border: 1px solid var(--border); }
+.pure-table td, .pure-table th {
+  border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.pure-table thead { background: var(--card-hover); }
+.pure-table thead th { color: var(--muted); }
+.pure-table-striped tr:nth-child(2n-1) td { background: var(--card); }
+
 footer {
   margin-top: 3em;
   border-top: 1px solid var(--border);

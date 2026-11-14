@@ -5,22 +5,24 @@ via GitHub Pages at **https://fit.sidorok.com**.
 
 ## How it works
 
-- Each training day is a markdown file in `days/`, named `dd-mm-yyyy.md`.
-  The whole program lives in the YAML header (see structure below); the body
-  is empty.
+- **Workouts** (home page, `/`) — list of training days from `workouts/`, named
+  `dd-mm-yyyy.md`. Completed days get a "✓ выполнено" badge.
+- **Diet** (`/diet/`) and **Vitamins** (`/vitamins/`) — placeholder pages from
+  `pages/`, content to be added later.
+- **Measurements** (`/measurements/`) — body data + measurement entries from
+  `measurements/` (one file per report, named `dd-mm-yyyy.md`).
+- The top nav bar shows on all pages except workout day pages.
 - Every push to `main` triggers `.github/workflows/pages.yml`, which builds the
   site with Hugo and deploys it to GitHub Pages.
-- The index page lists all days (newest first) as links; completed days get a
-  "✓ выполнено" badge.
-- Design: [Pure CSS](https://pure-css.github.io/) (vendored in `static/`) with a
-  dark theme layer and set-cells component in `static/app.css`.
-- Each set is rendered as a tappable cell (weight / reps / checkbox).
-  Ticks are stored in the browser's localStorage per device — they survive
-  reloads and screen lock, with a reset button on the page. Only real exercise
-  sets get checkboxes; warm-up, finisher and notes don't.
+- Design: [Pure CSS](https://pure-css.github.io/) (vendored in `assets/`) with a
+  dark theme layer in `assets/app.css`.
+- Workout pages have interactive set checkboxes and per-exercise "Заметки"
+  textareas — state is stored in the browser's localStorage per device, cleared
+  by the reset button.
 
 ## Day file structure
 
+See `workouts/*.md` for a full example. Key fields:
 ```yaml
 ---
 title: "Спина + бицепс + пресс"
@@ -65,7 +67,7 @@ highlighted in green together with the last main working set.
 
 ## Marking a day as done
 
-After the training, edit `days/dd-mm-yyyy.md`:
+After the training, edit `workouts/dd-mm-yyyy.md`:
 
 1. set `done: true` — the page switches to "report mode": no checkboxes/toolbar,
    the index link gets a "✓ выполнено" badge;
@@ -85,8 +87,29 @@ make build    # build static site into ./html
 
 ## Adding a new training day
 
-Create `days/dd-mm-yyyy.md` following the structure above, commit and push —
+Create `workouts/dd-mm-yyyy.md` following the structure above, commit and push —
 done.
+
+## Adding a measurement entry
+
+Create `measurements/dd-mm-yyyy.md`:
+
+```yaml
+---
+title: "Замер от 16.02.2026"
+date: 2026-02-16
+kg: "99,0"       # вес, кг ('weight' is a reserved Hugo key — use 'kg')
+waist: "101,9"   # живот, см
+bicep: "40,4"    # бицепс, см
+thigh: "63,4"    # бедро, см
+build:
+  render: false
+  list: local
+---
+```
+
+The measurements page (general info, latest entry cards, full history table)
+updates automatically.
 
 ---
 

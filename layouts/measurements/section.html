@@ -1,0 +1,47 @@
+{{ define "main" }}
+{{ partial "nav.html" . }}
+<article>
+  <h1>{{ .Title }}</h1>
+  {{ $dob := time .Params.dob }}
+  {{ $age := div (sub now.Unix $dob.Unix) 31557600 }}
+  {{ $word := "лет" }}
+  {{ if and (eq (mod $age 10) 1) (ne (mod $age 100) 11) }}{{ $word = "год" }}
+  {{ else if and (ge (mod $age 10) 2) (le (mod $age 10) 4) (or (lt (mod $age 100) 10) (gt (mod $age 100) 20)) }}{{ $word = "года" }}
+  {{ end }}
+  <h2>Общие данные</h2>
+  <ul class="plain">
+    <li>Рост: {{ .Params.height }}</li>
+    <li>Дата рождения: {{ $dob.Format "02.01.2006" }}</li>
+    <li>Возраст: {{ $age }} {{ $word }}</li>
+  </ul>
+  {{ $entries := .Pages.ByDate.Reverse }}
+  {{ with index $entries 0 }}
+    <h2>Последние замеры — {{ .Date.Format "02.01.2006" }}</h2>
+    <div class="stats">
+      <div class="stat"><span class="v">{{ .Params.kg }}</span><span class="k">Вес, кг</span></div>
+      <div class="stat"><span class="v">{{ .Params.waist }}</span><span class="k">Живот, см</span></div>
+      <div class="stat"><span class="v">{{ .Params.bicep }}</span><span class="k">Бицепс, см</span></div>
+      <div class="stat"><span class="v">{{ .Params.thigh }}</span><span class="k">Бедро, см</span></div>
+    </div>
+  {{ end }}
+  <h2>История замеров</h2>
+  <div class="table-wrap">
+    <table class="pure-table pure-table-striped">
+      <thead>
+        <tr><th>Дата</th><th>Вес, кг</th><th>Живот, см</th><th>Бицепс, см</th><th>Бедро, см</th></tr>
+      </thead>
+      <tbody>
+      {{ range $entries }}
+        <tr>
+          <td>{{ .Date.Format "02.01.2006" }}</td>
+          <td>{{ .Params.kg }}</td>
+          <td>{{ .Params.waist }}</td>
+          <td>{{ .Params.bicep }}</td>
+          <td>{{ .Params.thigh }}</td>
+        </tr>
+      {{ end }}
+      </tbody>
+    </table>
+  </div>
+</article>
+{{ end }}
