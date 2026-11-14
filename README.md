@@ -26,12 +26,16 @@ via GitHub Pages at **https://fit.sidorok.com**.
 title: "Спина + бицепс + пресс"
 date: 2026-11-16
 done: false
+restMax: "150"                        # max rest for the session (sec), fallback badge
 goal: "..."
 warmup:              # list of strings, supports **markdown**
   - "Кардио 6 минут, пульс 120–130"
 exercises:
   - name: "Тяга Т-грифа"
-    note: "максимально сводить лопатки"      # optional cue
+    machine: "Т-гриф"                  # machine / equipment (optional)
+    protection: "Налокотники"          # protection equipment badge (optional)
+    rest: "30–60"                      # rest between sets, sec (falls back to restMax)
+    note: "Максимально сводить лопатки" # instructions / insights (optional)
     sets:
       - { w: "60ф", r: 10 }                 # w = вес (string), r = повторы
       - { w: "СВ", r: "макс" }              # СВ = свой вес
@@ -46,10 +50,18 @@ notes:              # optional, list of strings
 ---
 ```
 
-Fields: `goal`, `warmup`, `finisher`, `notes`, and per-exercise `note` /
-`comment` / `result` / `actual` are optional. Drop-sets and rest-pause sets are
-just extra cells marked with `drop: true` (plus a `comment` explaining them) —
-they are highlighted in green together with the last main working set.
+Each exercise renders as: number + title with info badges (blue protection,
+green rest) → machine subtitle → instructions (`note`) → set/rep grid →
+completion notes. On upcoming days a small grayed-out "Заметки" textarea sits
+under each exercise — notes typed during the session are stored in localStorage
+per device and cleared by the reset button. On completed days the textarea is
+replaced by the `result` note from the report.
+
+Fields: `goal`, `restMax`, `warmup`, `finisher`, `notes`, and per-exercise
+`machine`, `protection`, `rest`, `note`, `comment`, `result`, `actual` are
+optional (the rest badge falls back to session `restMax` and is always shown).
+Drop-sets and rest-pause sets are just extra cells marked with `drop: true` —
+highlighted in green together with the last main working set.
 
 ## Marking a day as done
 
